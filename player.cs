@@ -52,6 +52,11 @@ public class player : MonoBehaviour
         {
             isGrounded = !isGrounded;
         }
+        if (col.collider.tag == "coin")
+        {
+            
+            Destroy(col.gameObject);
+        }
     }
     void OnCollisionExit2D(Collision2D col)
     {
