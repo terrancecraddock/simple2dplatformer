@@ -26,10 +26,32 @@ public class player : MonoBehaviour
             // Apply movement velocity
 
             r2d.velocity = new Vector2(-moveSpeed, 0);
+            if (Input.GetKey(KeyCode.Space))
+            {
+                if (IsGrounded())
+                {
+                    r2d.velocity = new Vector2(0, jumpHeight);
+                }
+                else
+                {
+                    r2d.velocity = new Vector2(0, 0);
+                }
+            }
         }
         else if (Input.GetKey(KeyCode.D))
         {
             r2d.velocity = new Vector2(moveSpeed, 0);
+            if (Input.GetKey(KeyCode.Space))
+            {
+                if (IsGrounded())
+                {
+                    r2d.velocity = new Vector2(0, jumpHeight);
+                }
+                else
+                {
+                    r2d.velocity = new Vector2(0, 0);
+                }
+            }
         }
         else if(Input.GetKey(KeyCode.Space))
         {
@@ -44,7 +66,7 @@ public class player : MonoBehaviour
         }
         else
         {
-            r2d.velocity = new Vector2(0, 0);
+            //r2d.velocity = new Vector2(0, 0);
         }
     }
     // called when the player hits the floor
