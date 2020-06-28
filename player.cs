@@ -94,6 +94,7 @@ public class player : MonoBehaviour
     {
         if (IsGrounded())
         {
+           //r2d.velocity.x
             jumpSound.Play();
             r2d.velocity = new Vector2(0, jumpHeight);
         }
