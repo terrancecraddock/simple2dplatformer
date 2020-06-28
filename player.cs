@@ -6,7 +6,8 @@ using UnityEngine;
 public class player : MonoBehaviour
 {
     [SerializeField] private LayerMask groundLayerMask;
-    [SerializeField] int moveSpeed = 3;
+    [SerializeField] int walkSpeed = 3;
+    [SerializeField] int runSpeed = 6;
     [SerializeField] int jumpHeight = 4;
     AudioSource jumpSound;
     Rigidbody2D r2d;
@@ -24,40 +25,41 @@ public class player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.LeftShift))
         {
             // Apply movement velocity
 
-            r2d.velocity = new Vector2(-moveSpeed, 0);
+            r2d.velocity = new Vector2(-walkSpeed, 0);
             if (Input.GetKey(KeyCode.Space))
             {
-                
-                    playerJump();
-                
-                
+                    playerJump();  
             }
         }
-        else if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.LeftShift))
         {
-            r2d.velocity = new Vector2(moveSpeed, 0);
+            r2d.velocity = new Vector2(walkSpeed, 0);
             if (Input.GetKey(KeyCode.Space))
             {
-                
-                    playerJump();
-                
+                    playerJump();  
             }
         }
         else if(Input.GetKey(KeyCode.Space))
         {
-           
                 playerJump();
-            
+        }
+        else if(Input.GetKey(KeyCode.LeftShift))
+        {
+            if(Input.GetKey(KeyCode.A))
+            {
+                r2d.velocity = new Vector2(-runSpeed, 0);
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                r2d.velocity = new Vector2(runSpeed, 0);
+            }
 
         }
-        else
-        {
-            //r2d.velocity = new Vector2(0, 0);
-        }
+
     }
     // called when the player hits the floor
     void OnCollisionEnter2D(Collision2D col)
@@ -94,10 +96,6 @@ public class player : MonoBehaviour
         {
             jumpSound.Play();
             r2d.velocity = new Vector2(0, jumpHeight);
-        }
-        else
-        {
-            r2d.velocity = new Vector2(0, 0);
         }
     }
 }
