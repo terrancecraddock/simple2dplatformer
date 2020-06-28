@@ -5,15 +5,17 @@ using UnityEngine;
 
 public class player : MonoBehaviour
 {
+    [SerializeField] private LayerMask groundLayerMask;
     [SerializeField] int moveSpeed = 3;
     [SerializeField] int jumpHeight = 4;
-    bool isGrounded = false;
     Rigidbody2D r2d;
+    BoxCollider2D bc2D;
     // Start is called before the first frame update
     void Start()
     {
         // Get the Rigid Body 2D Component
         r2d = GetComponent<Rigidbody2D>();
+        bc2D = GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame
@@ -31,7 +33,7 @@ public class player : MonoBehaviour
         }
         else if(Input.GetKey(KeyCode.Space))
         {
-            if(isGrounded)
+            if(IsGrounded())
             {
                 r2d.velocity = new Vector2(0, jumpHeight);
             }else
@@ -47,11 +49,7 @@ public class player : MonoBehaviour
     }
     // called when the player hits the floor
     void OnCollisionEnter2D(Collision2D col)
-    {
-        if(col.collider.tag == "ground")
-        {
-            isGrounded = !isGrounded;
-        }
+    {      
         if (col.collider.tag == "coin")
         {
             
@@ -60,9 +58,22 @@ public class player : MonoBehaviour
     }
     void OnCollisionExit2D(Collision2D col)
     {
-        if(isGrounded)
+      
+    }
+    private bool IsGrounded()
+    {
+        float extraHeightTest = 0.1f; //makes math less precise and thus better for this
+        RaycastHit2D raycastHit = Physics2D.Raycast(bc2D.bounds.center, Vector2.down, bc2D.bounds.extents.y + extraHeightTest, groundLayerMask);
+        Color rayColor;
+        if (raycastHit.collider != null)
         {
-            isGrounded = !isGrounded;
+            rayColor = Color.green;
         }
+        else
+        {
+            rayColor = Color.red;
+        }
+        Debug.DrawRay(bc2D.bounds.center, Vector2.down * (bc2D.bounds.extents.y + extraHeightTest));
+        return raycastHit.collider != null;
     }
 }
